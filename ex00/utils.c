@@ -30,6 +30,7 @@ void 	print_grid(int arr[4][4])
 	{
 		while (j < max)
 		{
+			if (arr[i][j])
 			ft_putchar(cast_int_to_char(arr[i][j]));
 			ft_putchar(' ');
 			j++;
