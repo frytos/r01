@@ -9,13 +9,12 @@
 /*   Updated: 2024/02/17 13:24:13 by argrouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 #include <unistd.h>
 #include "ft_atoi.h"
 #define SIZE 4
 
 int	init_grid(char *argv[],int grid[SIZE][SIZE][2]);
-int assign_and_check(int matrix[SIZE][SIZE][2], int row,int col,int value);
+int	assign_and_check(int matrix[SIZE][SIZE][2], int row,int col,int value);
 int	acceptable_input(int argc, char *argv[]);
 
 int	main(int argc, char *argv[])
@@ -27,7 +26,6 @@ int	main(int argc, char *argv[])
 		ft_putchar("Error\n");
 		return (-1);
 	}
-
 	init_grid(argv, grid); //checks with the 4 & 1 values that the matrix is possible, returns it if exists, or returns an error code
 }
 
@@ -40,77 +38,6 @@ int	init_grid(char *argv[],int grid[SIZE][SIZE][2])
 	while (index_argv < 17) // this while loop browses the arguments passed to the main()
 	{
 		int fill_easy_values(char *argv[], int index_argv, int grid[SIZE][SIZE][2]);
-		// // Remplissage sur la base des colXup
-		// if (1 <= index_argv && index_argv <= 4)
-		// {
-		// 	index_write = 0;
-		// 	if (ft_atoi(argv[index_argv]) == 4)
-		// 	{
-		// 		while (index_write < 4)
-		// 		{
-		// 			grid[index_write][index_argv - 1][0] = index_write + 1; // Need to verify if value is already set
-		// 			index_write++;
-		// 		}
-		// 	}
-		// 	else if (ft_atoi(argv[index_argv]) == 1)
-		// 	{
-		// 		grid[0][index_argv - 1][0] = 4;
-		// 	}
-		// }
-
-		// // Remplissage sur la base des colXdown
-		// if (5 <= index_argv && index_argv <= 8)
-		// {
-		// 	index_write = 0;
-		// 	if (ft_atoi(argv[index_argv]) == 4)
-		// 	{
-		// 		while (index_write < 4)
-		// 		{
-		// 			grid[3 - index_write][index_argv - 5][0] = index_write + 1; // Need to verify if value is already set
-		// 			index_write++;
-		// 		}
-		// 	}
-		// 	else if (ft_atoi(argv[index_argv]) == 1)
-		// 	{
-		// 		grid[3][index_argv - 5][0] = 4;
-		// 	}
-		// }
-
-		// // Remplissage sur la base des rowXleft
-		// if (9 <= index_argv && index_argv <= 12)
-		// {
-		// 	index_write = 0;
-		// 	if (ft_atoi(argv[index_argv]) == 4)
-		// 	{
-		// 		while (index_write < 4)
-		// 		{
-		// 			grid[index_argv - 9][index_write][0] = index_write + 1; // Need to verify if value is already set
-		// 			index_write++;
-		// 		}
-		// 	}
-		// 	else if (ft_atoi(argv[index_argv]) == 1)
-		// 	{
-		// 		grid[index_argv - 9][0][0] = 4;
-		// 	}
-		// }
-
-		// // Remplissage sur la base des rowXright
-		// if (13 <= index_argv && index_argv <= 16)
-		// {
-		// 	index_write = 0;
-		// 	if (ft_atoi(argv[index_argv]) == 4)
-		// 	{
-		// 		while (index_write < 4)
-		// 		{
-		// 			grid[index_argv - 13][3 - index_write][0] = index_write + 1; // Need to verify if value is already set
-		// 			index_write++;
-		// 		}
-		// 	}
-		// 	else if (ft_atoi(argv[index_argv]) == 1)
-		// 	{
-		// 		grid[index_argv - 13][3][0] = 4;
-		// 	}
-		// }
 		index_argv++;
 	}
 }
@@ -130,9 +57,11 @@ int	acceptable_input(int argc, char *argv[]) // check param passed to main()
 {
 	int index;
 
-	if (argc != 2)						// No more than 1 argument passed ()
+	if (argc != 2) 	// No more than 1 argument passed ()
+	{
 		ft_putchar("Error\n");
 		exit (-3);
+	}						
 	index = 0;
 	while (index < 32 || index != 0)
 	{
@@ -153,28 +82,31 @@ int fill_easy_values(char *argv[], int index_argv, int grid[SIZE][SIZE][2])
 	if ((1 + 4 * part) <= index_argv && index_argv <= 4 * (part + 1))
 	{
 		index_write = 0;
-		if (ft_atoi(argv[index_argv]) == 4)
+		if (ft_atoi(argv[index_argv]) == 4) // Set answer for special case for 4 towers observable
 		{
 			while (index_write < 4)
 			{
 				if (part == 0)
 					assign_and_check(grid[SIZE][SIZE][2], index_write, index_argv - 1, index_write + 1);
-					//grid[index_write][index_argv - 1][0] = index_write + 1;
 				else if (part == 1)
 					assign_and_check(grid[SIZE][SIZE][2], 3 - index_write, index_argv - 5, index_write + 1);
-					//grid[3 - index_write][index_argv - 5][0] = index_write + 1;
                 else if (part == 2)
 					assign_and_check(grid[SIZE][SIZE][2], index_argv - 9, index_write, index_write + 1);
-					//grid[index_argv - 9][index_write][0] = index_write + 1;
 				else
 					assign_and_check(grid[SIZE][SIZE][2], index_argv - 13, 3 - index_write, index_write + 1);
-					//grid[index_argv - 13][3 - index_write][0] = index_write + 1;
 				index_write++;
 			}
 		}
-		else if (ft_atoi(argv[index_argv]) == 1)
-		{
+		else if (ft_atoi(argv[index_argv]) == 1)   // Set answer for special case for 1 tower observable
 			grid[0][index_argv - 1][0] = 4;
-		}
+	}
+}
+
+int print_error_and_exit(int error_code)
+{
+	if (!error_code)
+	{
+		ft_putstr("Error\n");
+		exit(error_code);
 	}
 }
