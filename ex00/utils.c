@@ -12,6 +12,7 @@
 
 #include <unistd.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 void	ft_putchar(char c);
 void	ft_putstr(char *str);
@@ -21,6 +22,7 @@ char	cast_int_to_char(int value);
 
 void 	print_grid(int arr[4][4])
 {
+	printf("Begin printing");
 	int	max;
 	int	i;
 	int	j;	
@@ -47,9 +49,11 @@ void 	print_grid(int arr[4][4])
 
 int	print_error_and_exit(int trigger, int error_code)
 {
-	if (!trigger)
+	if (trigger)
 	{
 		ft_putstr("Error\n");
+		printf("%d\n", error_code);
+		ft_putchar(error_code);
 		exit (error_code);
 	}
 	return (0);

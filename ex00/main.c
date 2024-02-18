@@ -11,6 +11,8 @@
 /* ************************************************************************** */
 #include <unistd.h>
 #include <stdlib.h>
+#include <stdio.h>
+
 #include "ft_atoi.h"
 #include "utils.h"
 
@@ -20,28 +22,62 @@
 
 void	init_grid(char *argv[], int grid[X][Y]);
 void	check_n_set(int grid[X][Y], int row, int col, int value);
-void	acceptable_input(int argc, char *argv[]);
-void	fill_easy_values(char *argv[], int arg, int grid[X][Y]);
+
+void	check_input(int argc, char *argv[]);
+void	fill_easy_values(int value_observed, int arg, int grid[X][Y]);
+void    zero_grid(int grid[X][Y]);
 
 int	main(int argc, char *argv[])
 {
+	printf("Begin printing\n");
+	printf("argv[1] :\n       [i] 0 1 2 3 4 5 6 7 8 9 A B C D E F\nargv[1][i] %s\n",argv[1]);
 	int	grid[X][Y];	//static matrix 2-dimensions array (4x4 matrix)
-						//with potential flags (locked, possible values)
-	acceptable_input(argc, argv);// checks input 
+	printf("Post Matrix\n");
+	ft_putchar(10); print_grid(grid); ft_putchar(10);
+	zero_grid(grid);
+    ft_putchar(10); print_grid(grid); ft_putchar(10);
+					//with potential flags (locked, possible values)
+	printf("before test argc : %d\n", argc);
+	check_input(argc, argv);// checks input 
+	printf("before init\n");
 	init_grid(argv, grid);//populates grid based on 1&4 given values,
-							//updates it if possible,
+	printf("after init\n");
+						//updates it if possible,
 							//or returns an error code if not possible
+	ft_putchar(10); print_grid(grid); ft_putchar(10);
+}
+
+void    zero_grid(int grid[X][Y])
+{
+    int i;
+    int j;
+    i = 0;
+    j = 0;
+    
+    while (i < X)
+    {
+        while(j < Y)
+        {
+            grid[i][j] = 0;
+            j++;
+        }
+        j = 0;
+        i++;
+        
+    }
+    printf("\ngrid zeroed out !\n");
 }
 
 void	init_grid(char *argv[], int grid[X][Y])
 {
 	int	arg;
 
-	arg = 1;
-	while (arg < 17) //this loop browses arguments passed to the main()
+	arg = 0;
+	while (arg < 32) //this loop browses arguments passed to the main()
 	{
-		fill_easy_values(argv, arg, grid);
-		arg++;
+		printf("init_grid: argv[1][%d] \t= %c\n", arg, argv[1][arg]);
+		fill_easy_values(ft_atoi(&argv[1][arg]), arg, grid);
+		arg+=2;
 	}
 }
 
@@ -52,44 +88,70 @@ void	check_n_set(int grid[X][Y], int row, int col, int value)
 	grid[row][col] = value; //if empty, assign value
 }
 
-void	acceptable_input(int argc, char *argv[]) // check param passed to main()
+void	check_input(int argc, char *argv[]) // check param passed to main()
 {
 	int	i;
-
-	print_error_and_exit(argc != 2, -3);
+	printf("before test argc : %d\n", argc);
+	print_error_and_exit((argc != 2), -3);
+	printf("after test argc\n");
 	i = 0;
 	while (i < 32 || argv[1][i] != 0)
 	{
+		printf("%c\n", argv[1][i]);
 		// Checks that is a string of [1-4] char sepparated by a space
-		print_error_and_exit(!(argv[1][i] - 32 && (argv[1][i] - 49) / 4), -4);
-		i++;
+		print_error_and_exit((argv[1][i] >= '1' && argv[1][i] <= '4'), -4);
+		i+=2;
 	}
 	print_error_and_exit(i != 31, -5); // Checks the length of the string passed
 }
 
-void	fill_easy_values(char *argv[], int arg, int grid[X][Y])
+void	fill_easy_values(int value_observed, int arg, int grid[X][Y])
 {
 	int	input_section;
 	int	j;	//Uses this i to set the "4" towers
-	input_section = (arg - 1) / 4;
-	if ((1 + 4 * input_section) <= arg && arg <= 4 * (input_section + 1))
+	
+	//printf("%d\n",grid[0][0]);
+	//printf("%d", arg);
+    //return;
+	//return;
+
+	input_section = arg / 8;
+	
+    printf("arg = %d\tvalue_observed = %d\tinput_section : %d\n", arg, value_observed, input_section);
+    
+	j = 0;
+	if (value_observed == 4)
 	{
-		j = 0;
-		while (j < 4 && ft_atoi(argv[arg]) == 4)
+	    printf("special case 4\n");
+		while (j < 4)
 		{
 			if (input_section == 0)
-				check_n_set(grid, j, arg - 1, j + 1);
+				check_n_set(grid, j, arg/2, j + 1);
 			else if (input_section == 1)
-				check_n_set(grid, 3 - j, arg - 5, j + 1);
+				check_n_set(grid, 3 - j, arg/2 - 4, j + 1);
 			else if (input_section == 2)
-				check_n_set(grid, arg - 9, j, j + 1);
+				check_n_set(grid, arg/2 - 8, j, j + 1);
 			else
-				check_n_set(grid, arg - 13, 3 - j, j + 1);
+				check_n_set(grid, arg/2 - 12, 3 - j, j + 1);
 			j++;
 		}
-		if (ft_atoi(argv[arg]) == 1) //Sets answer for "1" special case
-			grid[0][arg - 1] = 4;
+		ft_putchar(10); print_grid(grid); ft_putchar(10);
 	}
+	else if (value_observed == 1)
+	{//Sets answer for "1" special case
+		printf("special case 1\n");
+		if (input_section == 0)
+			check_n_set(grid, 0, arg/2, 4);
+		else if (input_section == 1)
+			check_n_set(grid, 3, arg/2 - 4, 4);
+		else if (input_section == 2)
+			check_n_set(grid, arg/2 - 8, 0, 4);
+		else
+			check_n_set(grid, arg/2 - 12, 3, 4);
+		ft_putchar(10); print_grid(grid); ft_putchar(10);
+	}
+	else
+	    printf("No easy file for arg = %d, with value_observed = %d\n", arg, value_observed);
 }
 
 
