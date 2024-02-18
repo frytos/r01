@@ -22,7 +22,6 @@ char	cast_int_to_char(int value);
 
 void 	print_grid(int arr[4][4])
 {
-	printf("Begin printing");
 	int	max;
 	int	i;
 	int	j;	
@@ -30,21 +29,23 @@ void 	print_grid(int arr[4][4])
 	max = 4;
 	i = 0;
 	j = 0;
+	
 	while (i < max)
 	{
+	    //ft_putstr("");
 		while (j < max)
 		{
-			if (arr[i][j])
-			{
+			//if (arr[i][j])
+			//{
 				ft_putchar(cast_int_to_char((char)arr[i][j]));
 				ft_putchar(' ');
-			}
+			//}
 			j++;
 		}
-		ft_putchar('\n');
+		ft_putstr("\n");
 		j = 0;
 		i++;
-	}	
+	}
 }
 
 int	print_error_and_exit(int trigger, int error_code)
@@ -73,7 +74,7 @@ void	ft_putstr(char *str)
 
 char	cast_int_to_char(int value)
 {
-	return (value + '0');
+	return ((char)value + '0');
 }
 
 void	ft_putchar(char c)
