@@ -25,7 +25,6 @@ int	ft_atoi(char *str)
 	int		sign;
 	long	unsigned_long;
 	long	*ptr_unsigned_long;
-	long	signed_long;
 
 	index = 0;
 	while (ft_char_is_white_space(&str[index]))

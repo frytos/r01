@@ -16,6 +16,7 @@
 #include <unistd.h>
 
 void	ft_putstr(char *str);
+void	ft_putchar(char c);
 int		print_error_and_exit(int trigger, int error_code);
 void 	print_grid(int arr[4][4]);
 
