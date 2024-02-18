@@ -1,18 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   utils1.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: argrouss <argrouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 02:17:02 by argrouss          #+#    #+#             */
-/*   Updated: 2024/02/18 02:20:38 by argrouss         ###   ########.fr       */
+/*   Updated: 2024/02/18 22:32:21 by argrouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include "utils2.h"
 
 void	ft_putchar(char c);
 void	ft_putstr(char *str);
@@ -32,13 +33,13 @@ void 	print_grid(int arr[4][4])
 	
 	while (i < max)
 	{
-	    //ft_putstr("");
 		while (j < max)
 		{
 			//if (arr[i][j])
 			//{
 				ft_putchar(cast_int_to_char((char)arr[i][j]));
-				ft_putchar(' ');
+				if (max - j > 1)
+					ft_putchar(' ');
 			//}
 			j++;
 		}
